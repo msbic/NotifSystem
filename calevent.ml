@@ -31,7 +31,30 @@ type calEvent =
     frequency : eventFrequency
 }
 
-let createFrequency sfreq = None
+let createOnce ar = 
+    try
+        Some (Once (Time.of_string ar.(1)))
+    with
+    | _ -> None
+
+let createDaily ar =
+    try
+        Some (Daily (Time.Ofday.of_string ar.(1)))
+    with
+    | _ -> None
+
+(* Format: frequence;time *)
+let createFrequency sfreq = 
+    let lst = List.to_array ( String.split sfreq ';' ) in
+    match (Array.length lst) with
+    | ln when ln < 2 -> None
+    | _ -> match lst.(0) with
+           | "ONCE" -> createOnce lst
+           | "DAILY" -> createDaily lst
+           | "MONTHLY" -> None
+           | "WEEKLY" -> None
+           | "YEARLY" -> None
+           | _ -> None
 
 
 (* Format: name,message,frequency *)
