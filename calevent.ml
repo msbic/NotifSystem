@@ -43,6 +43,15 @@ let createDaily ar =
     with
     | _ -> None
 
+let createMonthly ar = 
+    try
+        let day = (int_of_string ar.(1)) in
+        match day with
+        | d when d > 0 && d < 29 -> Some (Monthly d)
+        | _ -> None
+    with
+    | _ -> None
+
 (* Format: frequence;time *)
 let createFrequency sfreq = 
     let lst = List.to_array ( String.split sfreq ';' ) in
